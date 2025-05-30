@@ -18,6 +18,9 @@ func Infof(format string, args ...any) {
 func Warn(msg string) {
 	slog.Warn(msg)
 }
+func Warnf(format string, args ...any) {
+	slog.Warn(fmt.Sprintf(format, args...))
+}
 func Error(msg string) {
 	slog.Error(msg)
 }

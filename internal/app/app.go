@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/Extremal37/asterisk_db_migrate/internal/config"
 	"github.com/Extremal37/asterisk_db_migrate/internal/storage"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func New(cfg *config.Config) *App {
