@@ -14,6 +14,11 @@ func New(conn *sql.DB) *Storage {
 	}
 }
 
+type Storage struct {
+	conn   *sql.DB
+	tables map[string]string
+}
+
 const (
 	queryCDR              = "INSERT INTO asterisk.cdr (calldate,clid,src,dst,dcontext,channel,dstchannel,lastapp,lastdata,duration,billsec,disposition,amaflags,accountcode,userfield,uniqueid) SELECT * FROM asterisk_backup.cdr"
 	queryExtensionsTable  = "INSERT INTO asterisk.extensions_table SELECT * FROM asterisk_backup.extensions_table"
@@ -32,8 +37,8 @@ const (
 	queryVoicemailUsers   = "INSERT INTO asterisk.voicemail_users SELECT * FROM asterisk_backup.voicemail_users"
 )
 
-func newTables() *map[string]string {
-	return &map[string]string{
+func newTables() map[string]string {
+	return map[string]string{
 		"cdr":                queryCDR,
 		"extensions_table":   queryExtensionsTable,
 		"ivr_body":           queryIVRBody,
@@ -52,14 +57,9 @@ func newTables() *map[string]string {
 	}
 }
 
-type Storage struct {
-	conn   *sql.DB
-	tables *map[string]string
-}
-
 func (s *Storage) Migrate() error {
 
-	for table, query := range *s.tables {
+	for table, query := range s.tables {
 		res, err := s.conn.Exec(query)
 		if err != nil {
 			return fmt.Errorf("failed to migrate %s table: %w", table, err)
