@@ -17,6 +17,7 @@ type DB struct {
 	Username string `env:"DB_USERNAME" env-default:"asteriskuser"`
 	Password string `env:"DB_PASSWORD" env-default:"asteriskpassword"`
 	Host     string `env:"DB_HOST" env-default:"localhost"`
+	Port     string `env:"DB_PORT" env-default:"3306"`
 	SourceDB string `env:"DB_SOURCE_DB" env-default:"asterisk_backup"`
 	DestDB   string `env:"DB_DESTINATION_DB" env-default:"asterisk"`
 }
