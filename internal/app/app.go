@@ -43,5 +43,10 @@ func initDB(cfg *config.Config) (*sql.DB, error) {
 		return conn, fmt.Errorf("failed to connect to database: %w", err)
 	}
 
+	err = conn.Ping()
+	if err != nil {
+		return conn, fmt.Errorf("failed to ping database: %w", err)
+	}
+
 	return conn, nil
 }
