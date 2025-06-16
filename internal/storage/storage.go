@@ -14,6 +14,11 @@ func New(conn *sql.DB) *Storage {
 	}
 }
 
+type Storage struct {
+	conn   *sql.DB
+	tables map[string]string
+}
+
 const (
 	queryCDR              = "INSERT INTO asterisk.cdr (calldate,clid,src,dst,dcontext,channel,dstchannel,lastapp,lastdata,duration,billsec,disposition,amaflags,accountcode,userfield,uniqueid) SELECT * FROM asterisk_backup.cdr"
 	queryExtensionsTable  = "INSERT INTO asterisk.extensions_table SELECT * FROM asterisk_backup.extensions_table"
@@ -50,11 +55,6 @@ func newTables() map[string]string {
 		"subscribers":        querySubscribers,
 		"voicemail_users":    queryVoicemailUsers,
 	}
-}
-
-type Storage struct {
-	conn   *sql.DB
-	tables map[string]string
 }
 
 func (s *Storage) Migrate() error {
