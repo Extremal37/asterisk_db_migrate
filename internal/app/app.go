@@ -19,7 +19,7 @@ type App struct {
 	storage *storage.Storage
 }
 
-func (a *App) Build() error {
+func (a *App) Run() error {
 	conn, err := initDB(a.cfg)
 	if err != nil {
 		return fmt.Errorf("failed to init database: %s", err)
@@ -27,11 +27,7 @@ func (a *App) Build() error {
 
 	a.storage = storage.New(conn)
 
-	return nil
-}
-
-func (a *App) Run() error {
-	err := a.storage.Migrate()
+	err = a.storage.Migrate()
 	if err != nil {
 		return fmt.Errorf("failed to migrate DB: %w", err)
 	}

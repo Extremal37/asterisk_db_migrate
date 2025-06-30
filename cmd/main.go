@@ -16,10 +16,6 @@ func main() {
 
 	a := app.New(cfg)
 
-	if err = a.Build(); err != nil {
-		logger.Fatalf("Failed to build app: %s", err)
-	}
-
 	if err = a.Run(); err != nil {
 		logger.Fatalf("Failed to run app: %s", err)
 	}
