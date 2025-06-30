@@ -12,7 +12,7 @@ type Logger struct {
 
 func New(level string) *Logger {
 	log := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: setLevel(level)}))
-	log.Info("Logging level set to", level)
+	log.Info("Logging level set to", "LEVEL", level)
 	return &Logger{log: log}
 }
 
