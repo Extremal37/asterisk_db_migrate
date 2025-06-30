@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/Extremal37/asterisk_db_migrate/internal/config"
+	"github.com/Extremal37/asterisk_db_migrate/internal/logger"
 	"github.com/Extremal37/asterisk_db_migrate/internal/storage"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -20,6 +21,7 @@ type App struct {
 }
 
 func (a *App) Run() error {
+	logger.Info("Initializing DB connection...")
 	conn, err := initDB(a.cfg)
 	if err != nil {
 		return fmt.Errorf("failed to init database: %s", err)
@@ -27,6 +29,7 @@ func (a *App) Run() error {
 
 	a.storage = storage.New(conn)
 
+	logger.Info("Starting migrations...")
 	err = a.storage.Migrate()
 	if err != nil {
 		return fmt.Errorf("failed to migrate DB: %w", err)

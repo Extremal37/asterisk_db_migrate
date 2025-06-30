@@ -7,6 +7,8 @@ import (
 )
 
 func main() {
+	logger.Info("Starting...")
+
 	cfg := config.New()
 
 	err := cfg.ParseConfig()
