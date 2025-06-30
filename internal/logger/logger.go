@@ -10,9 +10,24 @@ type Logger struct {
 	log *slog.Logger
 }
 
-func New() *Logger {
-	log := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
+func New(level string) *Logger {
+	log := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: setLevel(level)}))
 	return &Logger{log: log}
+}
+
+func setLevel(level string) slog.Level {
+	switch level {
+	case "DEBUG":
+		return slog.LevelDebug
+	case "INFO":
+		return slog.LevelInfo
+	case "WARN":
+		return slog.LevelWarn
+	case "ERROR":
+		return slog.LevelError
+	default:
+		return slog.LevelInfo
+	}
 }
 
 func (l *Logger) Debug(msg string) {

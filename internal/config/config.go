@@ -11,6 +11,7 @@ func New() *Config {
 
 type Config struct {
 	DB
+	Log
 }
 
 type DB struct {
