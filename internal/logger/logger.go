@@ -9,6 +9,9 @@ import (
 func Debug(msg string) {
 	slog.Debug(msg)
 }
+func Debugf(format string, args ...any) {
+	slog.Debug(fmt.Sprintf(format, args...))
+}
 func Info(msg string) {
 	slog.Info(msg)
 }
