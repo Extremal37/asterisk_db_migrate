@@ -36,6 +36,7 @@ func New(conn *sql.DB) *Storage {
 }
 
 func (s *Storage) Migrate() error {
+	logger.Debug("Starting migrations func")
 
 	for table, query := range s.tables {
 		logger.Debugf("Migrating table: %s", table)
