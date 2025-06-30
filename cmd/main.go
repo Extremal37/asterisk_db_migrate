@@ -7,21 +7,22 @@ import (
 )
 
 func main() {
-	logger.Info("Starting...")
+	l := logger.New()
+	l.Info("Starting...")
 
 	cfg := config.New()
 
 	err := cfg.ParseConfig()
 	if err != nil {
-		logger.Fatalf("Failed to parse config: %s", err)
+		l.Fatalf("Failed to parse config: %s", err)
 	}
 
-	a := app.New(cfg)
+	a := app.New(cfg, l)
 
 	if err = a.Run(); err != nil {
-		logger.Fatalf("Failed to run app: %s", err)
+		l.Fatalf("Failed to run app: %s", err)
 	}
 
-	logger.Info("Migration complete!")
+	l.Info("Migration complete!")
 
 }

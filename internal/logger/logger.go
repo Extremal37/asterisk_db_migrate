@@ -6,32 +6,41 @@ import (
 	"os"
 )
 
-func Debug(msg string) {
-	slog.Debug(msg)
-}
-func Debugf(format string, args ...any) {
-	slog.Debug(fmt.Sprintf(format, args...))
-}
-func Info(msg string) {
-	slog.Info(msg)
-}
-func Infof(format string, args ...any) {
-	slog.Info(fmt.Sprintf(format, args...))
-}
-func Warn(msg string) {
-	slog.Warn(msg)
-}
-func Warnf(format string, args ...any) {
-	slog.Warn(fmt.Sprintf(format, args...))
-}
-func Error(msg string) {
-	slog.Error(msg)
-}
-func Errorf(format string, args ...any) {
-	slog.Error(fmt.Sprintf(format, args...))
+type Logger struct {
+	log *slog.Logger
 }
 
-func Fatalf(format string, args ...any) {
-	slog.Error(fmt.Sprintf(format, args...))
+func New() *Logger {
+	log := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
+	return &Logger{log: log}
+}
+
+func (l *Logger) Debug(msg string) {
+	l.log.Debug(msg)
+}
+func (l *Logger) Debugf(format string, args ...any) {
+	l.log.Debug(fmt.Sprintf(format, args...))
+}
+func (l *Logger) Info(msg string) {
+	l.log.Info(msg)
+}
+func (l *Logger) Infof(format string, args ...any) {
+	l.log.Info(fmt.Sprintf(format, args...))
+}
+func (l *Logger) Warn(msg string) {
+	l.log.Warn(msg)
+}
+func (l *Logger) Warnf(format string, args ...any) {
+	l.log.Warn(fmt.Sprintf(format, args...))
+}
+func (l *Logger) Error(msg string) {
+	l.log.Error(msg)
+}
+func (l *Logger) Errorf(format string, args ...any) {
+	l.log.Error(fmt.Sprintf(format, args...))
+}
+
+func (l *Logger) Fatalf(format string, args ...any) {
+	l.log.Error(fmt.Sprintf(format, args...))
 	os.Exit(1)
 }

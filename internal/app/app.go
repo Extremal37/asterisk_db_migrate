@@ -9,27 +9,29 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func New(cfg *config.Config) *App {
+func New(cfg *config.Config, log *logger.Logger) *App {
 	return &App{
 		cfg: cfg,
+		log: log,
 	}
 }
 
 type App struct {
 	cfg     *config.Config
+	log     *logger.Logger
 	storage *storage.Storage
 }
 
 func (a *App) Run() error {
-	logger.Info("Initializing DB connection...")
+	a.log.Info("Initializing DB connection...")
 	conn, err := initDB(a.cfg)
 	if err != nil {
 		return fmt.Errorf("failed to init database: %s", err)
 	}
 
-	a.storage = storage.New(conn)
+	a.storage = storage.New(conn, a.log)
 
-	logger.Info("Starting migrations...")
+	a.log.Info("Starting migrations...")
 	err = a.storage.Migrate()
 	if err != nil {
 		return fmt.Errorf("failed to migrate DB: %w", err)

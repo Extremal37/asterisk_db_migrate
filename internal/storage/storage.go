@@ -9,12 +9,14 @@ import (
 
 type Storage struct {
 	conn   *sql.DB
+	log    *logger.Logger
 	tables map[string]string
 }
 
-func New(conn *sql.DB) *Storage {
+func New(conn *sql.DB, log *logger.Logger) *Storage {
 	return &Storage{
 		conn: conn,
+		log:  log,
 		tables: map[string]string{
 			"cdr":                queryCDR,
 			"extensions_table":   queryExtensionsTable,
@@ -36,10 +38,10 @@ func New(conn *sql.DB) *Storage {
 }
 
 func (s *Storage) Migrate() error {
-	logger.Info("Starting migrations func")
+	s.log.Debug("Starting migrations func")
 
 	for table, query := range s.tables {
-		logger.Infof("Migrating table: %s", table)
+		s.log.Debugf("Migrating table: %s", table)
 		res, err := s.conn.Exec(query)
 		if err != nil {
 			return fmt.Errorf("failed to migrate %s table: %w", table, err)
@@ -47,10 +49,10 @@ func (s *Storage) Migrate() error {
 
 		rows, err := res.RowsAffected()
 		if err != nil {
-			logger.Warnf("Unable to fetch count of affected rows for table: %s", table)
+			s.log.Warnf("Unable to fetch count of affected rows for table: %s", table)
 		}
 
-		logger.Infof("Succesfully migrate %s table. Rows affected: %d ", table, rows)
+		s.log.Infof("Succesfully migrate %s table. Rows affected: %d ", table, rows)
 	}
 
 	return nil

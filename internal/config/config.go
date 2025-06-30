@@ -22,6 +22,10 @@ type DB struct {
 	DestDB   string `env:"DB_DESTINATION_DB" env-default:"asterisk"`
 }
 
+type Log struct {
+	Level string `env:"LOG_LEVEL" env-default:"INFO"`
+}
+
 func (c *Config) ParseConfig() error {
 	if err := cleanenv.ReadEnv(c); err != nil {
 		return fmt.Errorf("failed to read env's :%w", err)
