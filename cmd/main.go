@@ -24,6 +24,6 @@ func main() {
 		logger.Fatalf("Failed to run app: %s", err)
 	}
 
-	logger.Info("App successfully stopped")
+	logger.Info("Migration complete!")
 
 }
