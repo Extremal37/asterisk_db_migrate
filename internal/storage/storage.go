@@ -7,18 +7,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func New(conn *sql.DB) *Storage {
-	return &Storage{
-		conn:   conn,
-		tables: newTables(),
-	}
-}
-
-type Storage struct {
-	conn   *sql.DB
-	tables map[string]string
-}
-
 const (
 	queryCDR              = "INSERT INTO asterisk.cdr (calldate,clid,src,dst,dcontext,channel,dstchannel,lastapp,lastdata,duration,billsec,disposition,amaflags,accountcode,userfield,uniqueid) SELECT * FROM asterisk_backup.cdr"
 	queryExtensionsTable  = "INSERT INTO asterisk.extensions_table SELECT * FROM asterisk_backup.extensions_table"
@@ -37,23 +25,31 @@ const (
 	queryVoicemailUsers   = "INSERT INTO asterisk.voicemail_users SELECT * FROM asterisk_backup.voicemail_users"
 )
 
-func newTables() map[string]string {
-	return map[string]string{
-		"cdr":                queryCDR,
-		"extensions_table":   queryExtensionsTable,
-		"ivr_body":           queryIVRBody,
-		"ivr_events":         queryIVREvents,
-		"ivr_holidays":       queryIVRHolidays,
-		"musiconhold":        queryMusicOnHold,
-		"queue_log":          queryQueueLog,
-		"queue_member_table": queryQueueMemberTable,
-		"queue_penalty":      queryQueuePenalty,
-		"queue_table":        queryQueueTable,
-		"rec_levels":         queryRecLevels,
-		"sipfriends":         querySipfriends,
-		"sounds":             querySounds,
-		"subscribers":        querySubscribers,
-		"voicemail_users":    queryVoicemailUsers,
+type Storage struct {
+	conn   *sql.DB
+	tables map[string]string
+}
+
+func New(conn *sql.DB) *Storage {
+	return &Storage{
+		conn: conn,
+		tables: map[string]string{
+			"cdr":                queryCDR,
+			"extensions_table":   queryExtensionsTable,
+			"ivr_body":           queryIVRBody,
+			"ivr_events":         queryIVREvents,
+			"ivr_holidays":       queryIVRHolidays,
+			"musiconhold":        queryMusicOnHold,
+			"queue_log":          queryQueueLog,
+			"queue_member_table": queryQueueMemberTable,
+			"queue_penalty":      queryQueuePenalty,
+			"queue_table":        queryQueueTable,
+			"rec_levels":         queryRecLevels,
+			"sipfriends":         querySipfriends,
+			"sounds":             querySounds,
+			"subscribers":        querySubscribers,
+			"voicemail_users":    queryVoicemailUsers,
+		},
 	}
 }
 
