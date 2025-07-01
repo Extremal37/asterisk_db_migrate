@@ -74,11 +74,15 @@ func (s *Storage) Close() {
 	err := s.conn.Close()
 	if err != nil {
 		s.log.Warnf("Failed to close DB connection: %v", err)
+	} else {
+		s.log.Debug("DB connection closed")
 	}
 }
 
 func (s *Storage) migrateTable(ctx context.Context, table string, query string) bool {
 	s.log.Debugf("Migrating table: %s", table)
+
+	start := time.Now()
 
 	res, err := s.conn.ExecContext(ctx, query)
 	if err != nil {
@@ -90,7 +94,9 @@ func (s *Storage) migrateTable(ctx context.Context, table string, query string) 
 	if err != nil {
 		s.log.Warnf("Unable to fetch count of affected rows for table: %s", table)
 	}
-	s.log.Infof("Succesfully migrate %s table. Rows affected: %d ", table, rows)
+
+	elapsed := time.Since(start)
+	s.log.Infof("Succesfully migrate %s table. Rows affected: %d . Time elapsed: %v ", table, rows, elapsed)
 
 	return true
 }
