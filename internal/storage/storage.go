@@ -1,12 +1,16 @@
 package storage
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"github.com/Extremal37/asterisk_db_migrate/internal/logger"
 	_ "github.com/go-sql-driver/mysql"
 	"sync"
+	"time"
 )
+
+const migrateTimeout = 30 * time.Minute
 
 type Storage struct {
 	conn   *sql.DB
@@ -38,8 +42,10 @@ func New(conn *sql.DB, log *logger.Logger) *Storage {
 	}
 }
 
-func (s *Storage) Migrate() error {
+func (s *Storage) Migrate(ctx context.Context) error {
 	s.log.Debug("Starting migrations func")
+	c, cancel := context.WithTimeout(ctx, migrateTimeout)
+	defer cancel()
 
 	var wg sync.WaitGroup
 	wg.Add(len(s.tables))
@@ -49,7 +55,7 @@ func (s *Storage) Migrate() error {
 	for table, query := range s.tables {
 		go func() {
 			defer wg.Done()
-			success := s.migrateTable(table, query)
+			success := s.migrateTable(c, table, query)
 			if !success {
 				successMigrate = false
 			}
@@ -71,10 +77,10 @@ func (s *Storage) Close() {
 	}
 }
 
-func (s *Storage) migrateTable(table string, query string) bool {
+func (s *Storage) migrateTable(ctx context.Context, table string, query string) bool {
 	s.log.Debugf("Migrating table: %s", table)
 
-	res, err := s.conn.Exec(query)
+	res, err := s.conn.ExecContext(ctx, query)
 	if err != nil {
 		s.log.Errorf("failed to migrate %s table: %w", table, err)
 		return false

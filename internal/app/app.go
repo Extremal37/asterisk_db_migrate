@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"github.com/Extremal37/asterisk_db_migrate/internal/config"
@@ -33,7 +34,7 @@ func (a *App) Run() error {
 	defer a.storage.Close()
 
 	a.log.Info("Starting migrations...")
-	err = a.storage.Migrate()
+	err = a.storage.Migrate(context.Background())
 	if err != nil {
 		return fmt.Errorf("failed to migrate DB: %w", err)
 	}
