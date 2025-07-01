@@ -2,9 +2,10 @@ package storage
 
 import (
 	"database/sql"
-	"fmt"
+	"errors"
 	"github.com/Extremal37/asterisk_db_migrate/internal/logger"
 	_ "github.com/go-sql-driver/mysql"
+	"sync"
 )
 
 type Storage struct {
@@ -40,20 +41,50 @@ func New(conn *sql.DB, log *logger.Logger) *Storage {
 func (s *Storage) Migrate() error {
 	s.log.Debug("Starting migrations func")
 
+	var wg sync.WaitGroup
+	wg.Add(len(s.tables))
+
+	successMigrate := true
+
 	for table, query := range s.tables {
-		s.log.Debugf("Migrating table: %s", table)
-		res, err := s.conn.Exec(query)
-		if err != nil {
-			return fmt.Errorf("failed to migrate %s table: %w", table, err)
-		}
-
-		rows, err := res.RowsAffected()
-		if err != nil {
-			s.log.Warnf("Unable to fetch count of affected rows for table: %s", table)
-		}
-
-		s.log.Infof("Succesfully migrate %s table. Rows affected: %d ", table, rows)
+		go func() {
+			defer wg.Done()
+			success := s.migrateTable(table, query)
+			if !success {
+				successMigrate = false
+			}
+		}()
 	}
 
+	wg.Wait()
+
+	if !successMigrate {
+		return errors.New("failed to migrate")
+	}
 	return nil
+}
+
+func (s *Storage) Close() {
+	err := s.conn.Close()
+	if err != nil {
+		s.log.Warnf("Failed to close DB connection: %v", err)
+	}
+}
+
+func (s *Storage) migrateTable(table string, query string) bool {
+	s.log.Debugf("Migrating table: %s", table)
+
+	res, err := s.conn.Exec(query)
+	if err != nil {
+		s.log.Errorf("failed to migrate %s table: %w", table, err)
+		return false
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		s.log.Warnf("Unable to fetch count of affected rows for table: %s", table)
+	}
+	s.log.Infof("Succesfully migrate %s table. Rows affected: %d ", table, rows)
+
+	return true
 }

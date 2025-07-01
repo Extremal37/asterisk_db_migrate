@@ -30,6 +30,7 @@ func (a *App) Run() error {
 	}
 
 	a.storage = storage.New(conn, a.log)
+	defer a.storage.Close()
 
 	a.log.Info("Starting migrations...")
 	err = a.storage.Migrate()
