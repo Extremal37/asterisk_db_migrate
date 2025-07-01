@@ -95,7 +95,7 @@ func (s *Storage) migrateTable(ctx context.Context, table string, query string) 
 		s.log.Warnf("Unable to fetch count of affected rows for table: %s", table)
 	}
 
-	elapsed := time.Since(start)
+	elapsed := time.Since(start).Round(time.Millisecond)
 	s.log.Infof("Succesfully migrate %s table. Rows affected: %d . Time elapsed: %v ", table, rows, elapsed)
 
 	return true
