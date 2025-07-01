@@ -96,7 +96,7 @@ func (s *Storage) migrateTable(ctx context.Context, table string, query string) 
 	}
 
 	elapsed := time.Since(start).Round(time.Millisecond)
-	s.log.Infof("Succesfully migrate %s table. Rows affected: %d . Time elapsed: %v ", table, rows, elapsed)
+	s.log.Debugf("Succesfully migrate %s table. Rows affected: %d . Time elapsed: %v ", table, rows, elapsed)
 
 	return true
 }
