@@ -1,65 +1,108 @@
 package storage
 
 const (
-	queryCDR = "INSERT IGNORE INTO " +
+	fieldsCDR = " calldate,clid,src,dst,dcontext,channel,dstchannel,lastapp,lastdata,duration,billsec,disposition,amaflags,accountcode,userfield,uniqueid "
+	queryCDR  = "INSERT IGNORE INTO " +
 		"asterisk.cdr " +
-		"(calldate,clid,src,dst,dcontext,channel,dstchannel,lastapp,lastdata,duration,billsec,disposition,amaflags,accountcode,userfield,uniqueid) " +
-		"SELECT * " +
+		"(" + fieldsCDR + ") " +
+		"SELECT " + fieldsCDR +
 		"FROM asterisk_backup.cdr"
-	queryExtensionsTable = "INSERT IGNORE INTO " +
+
+	fieldsExtensionsTable = " id,context,exten,app,appdata "
+	queryExtensionsTable  = "INSERT IGNORE INTO " +
 		"asterisk.extensions_table " +
-		"SELECT * " +
+		"(" + fieldsExtensionsTable + ") " +
+		"SELECT " + fieldsExtensionsTable +
 		"FROM asterisk_backup.extensions_table"
-	queryIVRBody = "INSERT IGNORE INTO " +
+
+	fieldsIVRBody = " id,major,inc_number,check_time,active_time,active,ivr_comment,wait_exten,audio_id,holiday_id,setcid,disa "
+	queryIVRBody  = "INSERT IGNORE INTO " +
 		"asterisk.ivr_body " +
-		"SELECT * " +
+		"(" + fieldsIVRBody + ") " +
+		"SELECT " + fieldsIVRBody +
 		"FROM asterisk_backup.ivr_body"
-	queryIVREvents = "INSERT IGNORE INTO " +
+
+	fieldsIVREvents = " id,ivr_id,`key`,action,parameters "
+	queryIVREvents  = "INSERT IGNORE INTO " +
 		"asterisk.ivr_events " +
-		"SELECT * " +
+		"(" + fieldsIVREvents + ") " +
+		"SELECT " + fieldsIVREvents +
 		"FROM asterisk_backup.ivr_events"
-	queryIVRHolidays = "INSERT IGNORE INTO " +
+
+	fieldsIVRHolidays = " id,comment "
+	queryIVRHolidays  = "INSERT IGNORE INTO " +
 		"asterisk.ivr_holidays " +
-		"SELECT * " +
+		"(" + fieldsIVRHolidays + ") " +
+		"SELECT " + fieldsIVRHolidays +
 		"FROM asterisk_backup.ivr_holidays"
-	queryMusicOnHold = "INSERT IGNORE INTO " +
+
+	fieldsMusicOnHold = " name,directory,application,mode,digit,sort,format,description,sda "
+	queryMusicOnHold  = "INSERT IGNORE INTO " +
 		"asterisk.musiconhold " +
-		"SELECT * " +
+		"(" + fieldsMusicOnHold + ") " +
+		"SELECT " + fieldsMusicOnHold +
 		"FROM asterisk_backup.musiconhold"
-	queryQueueLog = "INSERT IGNORE INTO " +
-		"asterisk.queue_log(time,callid,queuename,agent,event,position,origposition,waittime,channel,logintime,holdtime,calltime,callerid,url,`key`,penalty,ringtime,exten,context)  " +
-		"SELECT time,callid,queuename,agent,event,position,origposition,waittime,channel,logintime,holdtime,calltime,callerid,url,`key`,penalty,ringtime,exten,context " +
+
+	fieldsQueueLog = " time,callid,queuename,agent,event,position,origposition,waittime,channel,logintime,holdtime,calltime,callerid,url,`key`,penalty,ringtime,exten,context "
+	queryQueueLog  = "INSERT IGNORE INTO " +
+		"asterisk.queue_log " +
+		"(" + fieldsQueueLog + ") " +
+		"SELECT " + fieldsQueueLog +
 		"FROM asterisk_backup.queue_log"
-	queryQueueMemberTable = "INSERT IGNORE INTO " +
-		"asterisk.queue_member_table(uniqueid,membername,queue_name,interface,penalty,paused) " +
-		"SELECT uniqueid,membername,queue_name,interface,penalty,paused " +
+
+	fieldsQueueMemberTable = " uniqueid,membername,queue_name,interface,penalty,paused "
+	queryQueueMemberTable  = "INSERT IGNORE INTO " +
+		"asterisk.queue_member_table " +
+		"(" + fieldsQueueMemberTable + ") " +
+		"SELECT " + fieldsQueueMemberTable +
 		"FROM asterisk_backup.queue_member_table"
-	queryQueuePenalty = "INSERT IGNORE INTO " +
+
+	fieldsQueuePenalty = " interface,queue,penalty "
+	queryQueuePenalty  = "INSERT IGNORE INTO " +
 		"asterisk.queue_penalty " +
-		"SELECT * FROM " +
-		"asterisk_backup.queue_penalty"
-	queryQueueTable = "INSERT IGNORE INTO " +
-		"asterisk.queue_table(name,musiconhold,announce,context,timeout,monitor_join,monitor_format,queue_youarenext,queue_thereare,queue_callswaiting,queue_holdtime,queue_minutes,queue_seconds,queue_lessthan,queue_thankyou,queue_reporthold,announce_frequency,announce_round_seconds,announce_holdtime,retry,wrapuptime,maxlen,servicelevel,strategy,joinempty,leavewhenempty,eventmemberstatus,eventwhencalled,reportholdtime,memberdelay,weight,timeoutrestart,periodic_announce,periodic_announce_frequency,ringinuse,description,`escalate-if-not-available`,wait_timeout,exit_exten) " +
-		"SELECT name,musiconhold,announce,context,timeout,monitor_join,monitor_format,queue_youarenext,queue_thereare,queue_callswaiting,queue_holdtime,queue_minutes,queue_seconds,queue_lessthan,queue_thankyou,queue_reporthold,announce_frequency,announce_round_seconds,announce_holdtime,retry,wrapuptime,maxlen,servicelevel,strategy,joinempty,leavewhenempty,eventmemberstatus,eventwhencalled,reportholdtime,memberdelay,weight,timeoutrestart,periodic_announce,periodic_announce_frequency,ringinuse,description,`escalate-if-not-available`,wait_timeout,exit_exten " +
+		"(" + fieldsQueuePenalty + ") " +
+		"SELECT " + fieldsQueuePenalty +
+		"FROM asterisk_backup.queue_penalty"
+
+	fieldsQueueTable = " name,musiconhold,announce,context,timeout,monitor_join,monitor_format,queue_youarenext,queue_thereare,queue_callswaiting,queue_holdtime,queue_minutes,queue_seconds,queue_lessthan,queue_thankyou,queue_reporthold,announce_frequency,announce_round_seconds,announce_holdtime,retry,wrapuptime,maxlen,servicelevel,strategy,joinempty,leavewhenempty,eventmemberstatus,eventwhencalled,reportholdtime,memberdelay,weight,timeoutrestart,periodic_announce,periodic_announce_frequency,ringinuse,description,`escalate-if-not-available`,wait_timeout,exit_exten "
+	queryQueueTable  = "INSERT IGNORE INTO " +
+		"asterisk.queue_table " +
+		"(" + fieldsQueueTable + ") " +
+		"SELECT " + fieldsQueueTable +
 		"FROM asterisk_backup.queue_table"
-	queryRecLevels = "INSERT IGNORE INTO " +
+
+	fieldsRecLevels = " user_id,subscriber_name "
+	queryRecLevels  = "INSERT IGNORE INTO " +
 		"asterisk.rec_levels " +
-		"SELECT * FROM " +
-		"asterisk_backup.rec_levels"
-	querySipfriends = "INSERT IGNORE INTO " +
-		"asterisk.sipfriends(name,type,defaultuser,fromuser,fromdomain,secret,md5secret,auth,mailbox,subscribemwi,vmexten,callerid,cid_number,callingpres,usereqphone,language,`call-limit`,context,dtmfmode,subscribecontext,amaflags,accountcode,musicclass,mohsuggest,allowtransfer,nat,callgroup,pickupgroup,autoframing,disallow,allow,maxcallbitrate,host,outboundproxy,ipaddr,defaultip,port,fullcontact,insecure,qualify,regseconds,regexten,regserver,rtptimeout,rtpholdtimeout,rtpkeepalive,lastms,setvar,useragent,t38pt_udptl,recs,afk,mobile) " +
-		"SELECT name,type,defaultuser,fromuser,fromdomain,secret,md5secret,auth,mailbox,subscribemwi,vmexten,callerid,cid_number,callingpres,usereqphone,language,`call-limit`,context,dtmfmode,subscribecontext,amaflags,accountcode,musicclass,mohsuggest,allowtransfer,nat,callgroup,pickupgroup,autoframing,disallow,allow,maxcallbitrate,host,outboundproxy,ipaddr,defaultip,port,fullcontact,insecure,qualify,regseconds,regexten,regserver,rtptimeout,rtpholdtimeout,rtpkeepalive,lastms,setvar,useragent,t38pt_udptl,recs,afk,mobile " +
+		"(" + fieldsRecLevels + ") " +
+		"SELECT " + fieldsRecLevels +
+		"FROM asterisk_backup.rec_levels"
+
+	fieldsSipfriends = " name,type,defaultuser,fromuser,fromdomain,secret,md5secret,auth,mailbox,subscribemwi,vmexten,callerid,cid_number,callingpres,usereqphone,language,`call-limit`,context,dtmfmode,subscribecontext,amaflags,accountcode,musicclass,mohsuggest,allowtransfer,nat,callgroup,pickupgroup,autoframing,disallow,allow,maxcallbitrate,host,outboundproxy,ipaddr,defaultip,port,fullcontact,insecure,qualify,regseconds,regexten,regserver,rtptimeout,rtpholdtimeout,rtpkeepalive,lastms,setvar,useragent,t38pt_udptl,recs,afk,mobile "
+	querySipfriends  = "INSERT IGNORE INTO " +
+		"asterisk.sipfriends " +
+		"(" + fieldsSipfriends + ") " +
+		"SELECT " + fieldsSipfriends +
 		"FROM asterisk_backup.sipfriends"
-	querySounds = "INSERT IGNORE INTO " +
+
+	fieldsSounds = " id,sound_comment,sound_file,sound_file_length "
+	querySounds  = "INSERT IGNORE INTO " +
 		"asterisk.sounds " +
-		"SELECT * FROM " +
-		"asterisk_backup.sounds"
-	querySubscribers = "INSERT IGNORE INTO " +
-		"asterisk.subscribers(name,callerid,protocol,context,mobile,cfwd,recs,mailbox) " +
-		"SELECT name,callerid,protocol,context,mobile,cfwd,recs,mailbox " +
+		"(" + fieldsSounds + ") " +
+		"SELECT " + fieldsSounds +
+		"FROM asterisk_backup.sounds"
+
+	fieldsSubscribers = " name,callerid,protocol,context,mobile,cfwd,recs,mailbox "
+	querySubscribers  = "INSERT IGNORE INTO " +
+		"asterisk.subscribers " +
+		"(" + fieldsSubscribers + ") " +
+		"SELECT " + fieldsSubscribers +
 		"FROM asterisk_backup.subscribers"
-	queryVoicemailUsers = "INSERT IGNORE INTO " +
+
+	fieldsVoicemailUsers = " uniqueid, customer_id, context, mailbox, password, attach, email, fullname, pager, tz, saycid, dialout, callback, review, operator, envelope, sayduration, saydurationm, sendvoicemail, delete, nextaftercmd, forcename, forcegreetings, hidefromdir, stamp "
+	queryVoicemailUsers  = "INSERT IGNORE INTO " +
 		"asterisk.voicemail_users " +
-		"SELECT * FROM " +
-		"asterisk_backup.voicemail_users"
+		"(" + fieldsVoicemailUsers + ") " +
+		"SELECT " + fieldsVoicemailUsers +
+		"FROM asterisk_backup.voicemail_users"
 )
