@@ -99,7 +99,7 @@ const (
 		"SELECT " + fieldsSubscribers +
 		"FROM asterisk_backup.subscribers"
 
-	fieldsVoicemailUsers = " uniqueid, customer_id, context, mailbox, password, attach, email, fullname, pager, tz, saycid, dialout, callback, review, operator, envelope, sayduration, saydurationm, sendvoicemail, delete, nextaftercmd, forcename, forcegreetings, hidefromdir, stamp "
+	fieldsVoicemailUsers = " uniqueid, customer_id, context, mailbox, password, attach, email, fullname, pager, tz, saycid, dialout, callback, review, operator, envelope, sayduration, saydurationm, sendvoicemail, `delete`, nextaftercmd, forcename, forcegreetings, hidefromdir, stamp "
 	queryVoicemailUsers  = "INSERT IGNORE INTO " +
 		"asterisk.voicemail_users " +
 		"(" + fieldsVoicemailUsers + ") " +
