@@ -86,7 +86,7 @@ func (s *Storage) migrateTable(ctx context.Context, table string, query string) 
 
 	res, err := s.conn.ExecContext(ctx, query)
 	if err != nil {
-		s.log.Errorf("failed to migrate %s table: %w", table, err)
+		s.log.Errorf("failed to migrate %s table: %v", table, err)
 		return false
 	}
 
