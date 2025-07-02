@@ -12,8 +12,8 @@ type Logger struct {
 
 func New(level string) *Logger {
 	log := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		Level:     setLevel(level),
-		AddSource: true,
+		Level: setLevel(level),
+		//AddSource: true,
 	}))
 	log.Info(fmt.Sprintf("Logging level set to %s", level))
 	return &Logger{log: log}
