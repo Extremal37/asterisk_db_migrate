@@ -4,3 +4,8 @@
 ```shell
 sed 's/TRIGGER/TRIGGER IF NOT EXISTS/g' aviacc-pbx1-mysql-20250530.sql | mysql asterisk_backup
 ```
+
+2. Запускаем миграцию
+```shell
+DB_PASSWORD=asteriskpassword ./asterisk_db_migrate
+```
