@@ -8,7 +8,7 @@ const (
 		"SELECT " + fieldsCDR +
 		"FROM asterisk_backup.cdr"
 
-	fieldsExtensionsTable = " id,context,exten,app,appdata "
+	fieldsExtensionsTable = " id,context,exten,priority,app,appdata "
 	queryExtensionsTable  = "INSERT IGNORE INTO " +
 		"asterisk.extensions_table " +
 		"(" + fieldsExtensionsTable + ") " +
