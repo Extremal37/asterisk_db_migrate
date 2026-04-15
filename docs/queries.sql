@@ -19,6 +19,6 @@ INSERT INTO asterisk.sipfriends(name,type,defaultuser,fromuser,fromdomain,secret
 
 INSERT INTO asterisk.sounds(id,sound_comment,sound_file,sound_file_length) SELECT id,sound_comment,sound_file,sound_file_length FROM sounds;
 
-INSERT INTO asterisk.subscribers(name,callerid,protocol,context,mobile,cfwd,recs,mailbox) SELECT name,callerid,protocol,context,mobile,cfwd,recs,mailbox FROM subscribers;
+INSERT INTO asterisk.subscribers(name,callerid,protocol,context,mobile,cfwd,recs,mailbox,fwd_noanswer,fwd_busy,on_noanswer,on_busy) SELECT name,callerid,protocol,context,mobile,cfwd,recs,mailbox,fwd_noanswer,fwd_busy,on_noanswer,on_busy FROM subscribers;
 
 INSERT INTO asterisk.voicemail_users(uniqueid,customer_id,context,mailbox,password,attach,email,fullname,pager,tz,saycid,dialout,callback,review,operator,envelope,sayduration,saydurationm,sendvoicemail,`delete`,nextaftercmd,forcename,forcegreetings,hidefromdir,stamp) SELECT uniqueid,customer_id,context,mailbox,password,attach,email,fullname,pager,tz,saycid,dialout,callback,review,operator,envelope,sayduration,saydurationm,sendvoicemail,`delete`,nextaftercmd,forcename,forcegreetings,hidefromdir,stamp FROM voicemail_users;
